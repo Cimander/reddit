@@ -25,5 +25,8 @@ urlpatterns = [
     path('user/', include('apps.user.urls')),
     path('chat/', include('apps.chat.urls')),
     path('post/', include('apps.publicate.urls')),
+<<<<<<< HEAD
     path('parser/', include('apps.parser.urls')),
+=======
+>>>>>>> origin/main
 ]

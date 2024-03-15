@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from pyowm import OWM
 from pyowm.utils import config
 from pyowm.utils import timestamps
@@ -19,3 +20,10 @@ print("Осадки:", w.rain)
 print("Индекс теплового комфорта:", w.heat_index)
 print("Облачность:", w.clouds)
 
+=======
+import requests
+from bs4 import BeautifulSoup as BS
+
+with requests.get("https://www.nbkr.kg/index1.jsp?item=1562&lang=RUS") as file:
+    src = file
+>>>>>>> origin/main
