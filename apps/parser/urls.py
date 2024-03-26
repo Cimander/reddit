@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import PrintValueView, WeatherAPIView
+from .views import PrintValueView, WeatherAPIView, WeatherListAPIView
 
 urlpatterns = [
     path('pars/', PrintValueView.as_view(), name='parser'),
-    path('weather/', WeatherAPIView.as_view(), name='weather'),
+    path('create/', WeatherAPIView.as_view(), name='weather'),
+    path('weather/', WeatherListAPIView.as_view(), name='weather'),
 ]

@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
-
+from apps.publicate.models import Cart
 from apps.user.models import User
 from apps.user.permissions import AnonPermission
 from apps.user.serializer import MyTokenSerializer, UserSerializer
@@ -29,7 +29,8 @@ class RegisterView(APIView):
             )
             user.set_password(request.data['password'])
             user.save()
-
+            cart = Cart.objects.create(user=user)
+            cart.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

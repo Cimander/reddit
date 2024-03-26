@@ -8,14 +8,14 @@ from telegram.ext import (
     Filters,
     CallbackQueryHandler
 )
-from blog.settings import TELEGRAM_TOKEN
+
 from menu import (
     main_menu_keyboard,
     courses_menu_keyboard
 )
 from key_buttons import tele_button, courses
 # ldjfhvcoidjfv'codjngpvibkndpfginvpdifnvk
-
+TELEGRAM_TOKEN ='6964995020:AAHLnOdQMnBYU1DBloFLjpbxbI7YESia_0o'
 
 ABOUT = tele_button[0]
 COURSES = tele_button[1]

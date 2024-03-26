@@ -29,29 +29,19 @@ class PostListAPIView(generics.ListAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     filter_backends = (SearchFilter, OrderingFilter,)
-    search_fields = ['name']
+    search_fields = ['title']
 
 
 class CommentViewSet(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-
-
-
-
-class PostFilterListAPIView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def get(self, request):
-        if request.query_params.get('search'):
-            objects = Post.objects.filter(name__contains=request.query_params.get('search'))
-        else:
-            objects = Post.objects.all()
-        serializer = PostSerializer(objects, many=True)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
 
 
 class PostUpdateAPIView(generics.RetrieveUpdateAPIView):
@@ -70,15 +60,17 @@ class PostDeleteAPIView(generics.DestroyAPIView):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
 
 class CartAPIView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def get(self, request, id):
-        snippet = Cart.objects.get(user_id=id)
-        serializer = CartSerializer(snippet)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):  # Обратите внимание на добавленный параметр self
+        serializer = CartSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CartUpdateAPIView(APIView):

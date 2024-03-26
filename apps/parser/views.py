@@ -1,11 +1,12 @@
-<<<<<<< HEAD
+from rest_framework import generics, permissions, status
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import ValueSerializer
+from .serializers import ValueSerializer, CitySerializer, WeatherSerializer
 import requests
 from bs4 import BeautifulSoup as BS
 from pyowm import OWM
-
+from .models import City
 
 a = "table-responsive"
 r = requests.get("https://www.nbkr.kg/index1.jsp?item=1562&lang=RUS")
@@ -40,22 +41,38 @@ owm = OWM('28c8e715bdb5d5bb438b2d1051508faa')
 mgr = owm.weather_manager()
 
 class WeatherAPIView(APIView):
-    def get(self, request):
-        location = request.GET.get('location', 'London,GB')
-        observation = mgr.weather_at_place(location)
-        w = observation.weather
-        data = {
-            "status": w.detailed_status,
-            "wind": w.wind(),
-            "humidity": w.humidity,
-            "temperature": w.temperature('celsius'),
-            "rain": w.rain,
-            "heat_index": w.heat_index,
-            "clouds": w.clouds,
-        }
-        return Response(data)
-=======
-from django.shortcuts import render
+    def post(self, request):
+        serializer = CitySerializer(data=request.data)
+        if serializer.is_valid():
+            location = request.GET.get('location', request.data['content'])
+            observation = mgr.weather_at_place(location)
+            w = observation.weather
+            city = City.objects.create(
+                content=request.data['content'],
+                weather={
+                        "status":w.detailed_status,
+                        "wind":w.wind(),
+                        "humidity": w.humidity,
+                        "temperature": w.temperature('celsius'),
+                        "rain": w.rain,
+                        "heat_index": w.heat_index,
+                        "clouds": w.clouds
+                        }
 
-# Create your views here.
->>>>>>> origin/main
+            )
+            city.weather = city.weather.replace("'", "\"")
+            city.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class WeatherListAPIView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = WeatherSerializer
+    queryset = City.objects.all()
+    filter_backends = (SearchFilter, OrderingFilter,)
+    search_fields = ['content']
+
+
+
+
