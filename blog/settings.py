@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
+from dotenv import load_dotenv
 from pathlib import Path
-
+from decouple import config
 from rest_framework import permissions
 from rest_framework.schemas import get_schema_view, openapi
 
@@ -23,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!!pn^&)w*hy8bjcg9)cdk(zf@-on*_e@7_8_i(lo@c$x@%0wya'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
 CSRF_COOKIE_SECURE = True
 
@@ -106,12 +107,7 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
 
 
 # Password validation
@@ -132,6 +128,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
