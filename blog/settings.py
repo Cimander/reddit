@@ -84,7 +84,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', ' 13.49.243.212']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 ROOT_URLCONF = 'blog.urls'
