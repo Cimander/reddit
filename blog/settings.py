@@ -34,7 +34,7 @@ CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '51.20.6.51']
 
 AUTH_USER_MODEL = 'user.MyUser'
 
