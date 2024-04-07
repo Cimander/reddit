@@ -22,7 +22,7 @@ class Category(MPTTModel):
 
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True )
     title = models.CharField(max_length=300)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -38,6 +38,7 @@ class Post(models.Model):
     def remove_from_favorite(self, user):
         cart, created = Cart.objects.get_or_create(user=user)
         cart.posts.remove(self)
+
 class Like(models.Model):
     post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -55,19 +56,12 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
    
-#class Comment(models.Model):
-#    content = models.TextField()
-#    created_at = models.DateTimeField(auto_now_add=True)
-#    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)  # замените 'yourappname' на имя вашего приложения
-#    author = models.ForeignKey(User, on_delete=models.CASCADE)  # добавляем поле для автора
-
-#    def __str__(self):
-#        return self.content
 
 
 
-class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    post = models.ManyToManyField(Post)
+
+#class Cart(models.Model):
+    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #post = models.ForeignKey(Post, null=True, on_delete=models.CASCADE)
 
 

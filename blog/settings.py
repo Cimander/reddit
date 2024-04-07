@@ -42,7 +42,7 @@ CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 
 
-AUTH_USER_MODEL = 'user.MyUser'
+AUTH_USER_MODEL = 'user.User'
 
 TELEGRAM_TOKEN ='6964995020:AAHLnOdQMnBYU1DBloFLjpbxbI7YESia_0o'
 PROXY_URL='localhost'
@@ -63,8 +63,9 @@ INSTALLED_APPS = [
     'mptt',
     "apps.user",
     "apps.publicate",
-    #"apps.chat",
+    "apps.chat",
     "apps.parser",
+    "apps.bot"
 ]
 
 MIDDLEWARE = [
@@ -120,7 +121,8 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        #'ENGINE': 'django.db.backends.sqlite3', Это часть если postgres не работает
         'NAME': config('POSTGRES_DB'),
         'USER': config('POSTGRES_USER'),
         'PASSWORD': config('POSTGRES_PASSWORD'),
@@ -211,25 +213,7 @@ REST_FRAMEWORK = {
 
 
 
-DJANGO_TELEGRAMBOT = {
 
-    'MODE' : 'WEBHOOK',
-
-    'WEBHOOK_SITE' : 'https://mywebsite.com',
-    'WEBHOOK_PREFIX' : '/prefix', # (Optional[str]) # If this value is specified,
-                                  # a prefix is added to webhook url
-
-
-
-    'BOTS' : [
-        {
-           'TOKEN': '6964995020:AAHLnOdQMnBYU1DBloFLjpbxbI7YESia_0o', #Your bot token.
-
-        },
-        #Other bots here with same structure.
-    ],
-
-}
 
 SWAGGER_SETTINGS = {
     "exclude_namespaces": ['rest_logout', ],  # List URL namespaces to ignore

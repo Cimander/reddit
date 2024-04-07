@@ -1,12 +1,24 @@
 from rest_framework import serializers
-from .models import Message, Chat
+from .models import Message, Group
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['id', 'name', 'members']
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ['__all__']
+        fields = ['user',  'content', 'created_at']
 
-class ChatSerializer(serializers.ModelSerializer):
+comments = serializers.SerializerMethodField()
+
+class GroupListSerializer(serializers.ModelSerializer):
+    message = serializers.SerializerMethodField()
     class Meta:
-        model = Chat
-        fields = ['__all__']
+        model = Group
+        fields = "__all__"
+
+    def get_message(self, obj):
+        message = Message.objects.filter(group_id=obj.id)
+        return MessageSerializer(message, many=True).data

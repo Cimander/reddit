@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import permissions
@@ -36,10 +36,11 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('apps.user.urls')),
-    #path('chat/', include('chat.urls')),
+    path('chat/', include('apps.chat.urls')),
     path('post/', include('apps.publicate.urls')),
     path('api/', include('apps.publicate.urls')),  # Подставьте имя вашего приложения
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('parser/', include('apps.parser.urls')),
+    #path('', include('apps.bot.urls')),
 ]

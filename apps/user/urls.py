@@ -1,10 +1,8 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-from .views import RegisterView, LoginAPIView
-#from .Telegram import main
+from .views import  CustomUserRetrieveUpdateDestroy, RegisterView
 
 urlpatterns = [
-    path('registr/', RegisterView.as_view(), name='registration'),
-    path('login/', LoginAPIView.as_view(), name='login'),
-    #path('send_message/', main, name='send_telegram_message'),
+
+    path('register/', RegisterView.as_view(), name='user-list-create'),
+    path('<int:pk>/', CustomUserRetrieveUpdateDestroy.as_view(), name='user-detail'),
 ]

@@ -1,5 +1,5 @@
 import telegram
-from apps.user.key_buttons import tele_button, create
+from key_buttons import tele_button, create
 
 
 def main_menu_keyboard():

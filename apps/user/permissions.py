@@ -15,6 +15,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.user == request.user
 
 
-class IsSellerPermission(permissions.BasePermission):
+class IsAdminPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_Seller
+        return request.user.is_Admin

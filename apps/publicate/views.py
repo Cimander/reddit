@@ -9,16 +9,22 @@ from .serializers import (
     CommentSerializer,
     LikeSerializer,
     PostCreateSerializer,
-
+    CommentCreateSerializer,
     CategorySerializer,
     CartUpdateSerializer,
     CartSerializer)
 
 
+class PostRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.AllowAny]
+    lookup_field = 'pk'
 class PostCreateAPIView(generics.CreateAPIView):
 
     serializer_class = PostCreateSerializer
     permission_classes = [permissions.AllowAny]
+
 
 class LikeCreateAPIView(generics.CreateAPIView):
 
@@ -34,61 +40,27 @@ class PostListAPIView(generics.ListAPIView):
 
 class CommentViewSet(generics.CreateAPIView):
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    serializer_class = CommentCreateSerializer
     permission_classes = [permissions.AllowAny]
 
-
-
-
-
-
-
-
-class PostUpdateAPIView(generics.RetrieveUpdateAPIView):
-    queryset = Post.objects.all()
-    permission_classes = [IsAuthenticated]
-    serializer_class = PostSerializer
-    lookup_field = 'pk'
-
-
-class PostDeleteAPIView(generics.DestroyAPIView):
-    queryset = Post.objects.all()
-    permission_classes = [IsAuthenticated]
-    serializer_class = PostSerializer
-    lookup_field = 'pk'
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-class CartAPIView(APIView):
-    permission_classes = [permissions.AllowAny]
+#class CartAPIView(APIView):
+#    permission_classes = [permissions.AllowAny]
 
 
-    def post(self, request):  # Обратите внимание на добавленный параметр self
-        serializer = CartSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #def post(self, request):
+    #    serializer = CartSerializer(data=request.data)
+    #    if serializer.is_valid():
+    #        serializer.save()
+    #        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CartUpdateAPIView(APIView):
-    permission_classes = [permissions.AllowAny]
-
-    def put(self, request, id):
-        snippet = Cart.objects.get(user_id=id)
-        serializer = CartUpdateSerializer(snippet, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CartResetAPIView(APIView):
-    permission_classes = [permissions.AllowAny]
-
-    def put(self, request, id):
-        snippet = Cart.objects.get(user_id=id)
-        snippet.save()
-        return Response({"response": 'reset was successfull'}, status=status.HTTP_200_OK)
+#class CartRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    #queryset = Cart.objects.all()
+    #serializer_class = CartSerializer
+    #permission_classes = [permissions.AllowAny]

@@ -27,3 +27,4 @@ if temperature is not None and description is not None:
     print(f"Текущая температура в городе {city}: {temperature}°C")
     print(f"Погодные условия: {description}")
 
+#Это часть для проверки кода

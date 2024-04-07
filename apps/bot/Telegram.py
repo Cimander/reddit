@@ -11,7 +11,7 @@ from key_buttons import tele_button, create
 from menu import main_menu_keyboard,  create_menu_keyboard
 
 from blog import settings
-# ldjfhvcoidjfv'codjngpvibkndpfginvpdifnvk
+
 TELEGRAM_TOKEN =settings.TELEGRAM_TOKEN
 
 ABOUT = tele_button[0]

@@ -1,38 +1,39 @@
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from .manages import CustomUserManager
+from django.utils import timezone
 
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, username, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, username=username, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
+    def create_superuser(self, email, username, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
 
-class MyUser(AbstractBaseUser, PermissionsMixin):
-    username = None
-    email = models.EmailField('email address', unique=True)
-    password = models.CharField(max_length=255, null=False, blank=False)
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self.create_user(email, username, password, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=150, unique=True)
     is_active = models.BooleanField(default=True)
-    is_superuser = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    subscribe = models.IntegerField(default=0)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    date_joined = models.DateTimeField(default=timezone.now, editable=False)  # автоматическое заполнение и блокировка
 
     objects = CustomUserManager()
 
-    def __str__(self):
-        return self.email
-
-
-
-
-
-class User(MyUser):
-    name = models.CharField(max_length=255, null=True, blank=True)
-    second_name = models.CharField(max_length=255, null=True, blank=True)
-    phone = models.CharField(max_length=255, null=True, blank=True)
-    address = models.CharField(max_length=255, null=True, blank=True)
-    card_number = models.CharField(max_length=255, null=True, blank=True)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email

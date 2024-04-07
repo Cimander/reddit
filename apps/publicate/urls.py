@@ -5,11 +5,9 @@ from .views import (
     CommentViewSet,
     LikeCreateAPIView,
     PostCreateAPIView,
-    PostUpdateAPIView,
-    PostDeleteAPIView,
-    CartAPIView,
-    CartUpdateAPIView,
-    CartResetAPIView,
+    PostRetrieveUpdateDestroy,
+    #CartAPIView,
+    #CartRetrieveUpdateDestroy,
     CategoryViewSet)
 
 
@@ -17,15 +15,14 @@ from .views import (
 urlpatterns = [
     path('', PostListAPIView.as_view(), name='list-post'),
     path('create/', PostCreateAPIView.as_view(), name='post-create'),
-    path('update/', PostUpdateAPIView.as_view(), name='post-update'),
-    path('<int:pk>/delete/', PostDeleteAPIView.as_view(), name='post-delete'),
+    path('redact/<int:pk>/', PostRetrieveUpdateDestroy.as_view(), name='post-redact'),
     path('comment/', CommentViewSet.as_view(), name='comment'),
     path('like/', LikeCreateAPIView.as_view(), name='like'),
     path('category/', CategoryViewSet.as_view({'get': 'list'}), name='category'),
 
 
 
-    path('cart/', CartAPIView.as_view(), name='cart'),
-    path('cart/<int:id>/update/', CartUpdateAPIView.as_view(), name='cart-update'),
-    path('cart/<int:id>/reset/', CartResetAPIView.as_view(), name='cart-reset'),
+    #path('cart/', CartAPIView.as_view(), name='cart'),
+    #path('cart/<int:pk>/', CartRetrieveUpdateDestroy.as_view(), name='cart-update'),
+
 ]

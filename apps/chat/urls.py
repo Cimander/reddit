@@ -1,9 +1,18 @@
 
 from django.urls import path
-from .views import ChatListCreateAPIView, MessageListCreateAPIView, UserFilterListAPIView
+from .views import (
+                    GroupListCreate,
+                    GroupRetrieveUpdateDestroy,
+                    GroupMembersList,
+                    MessageListCreateView,
+                    MessageRetrieveUpdateDestroyView,
+                    GroupRetrieveView)
 
 urlpatterns = [
-    path('chats/', ChatListCreateAPIView.as_view(), name='chat-list-create'),
-    path('chats/<int:chat_id>/messages/', MessageListCreateAPIView.as_view(), name='message-list-create'),
-    path('filter/user/', UserFilterListAPIView.as_view(), name='user-filter'),
+    path('groups/', GroupListCreate.as_view(), name='group-list-create'),
+    path('groups/look/<int:pk>/', GroupRetrieveView.as_view(), name='group-list'),
+    path('groups/<int:pk>/', GroupRetrieveUpdateDestroy.as_view(), name='group-detail'),
+    path('groups/<int:pk>/members/', GroupMembersList.as_view(), name='group-members-list'),
+    path('messages/create/<int:pk>/', MessageListCreateView.as_view(), name='message-list-create'),
+    path('messages/<int:pk>/', MessageRetrieveUpdateDestroyView.as_view(), name='message-detail'),
 ]

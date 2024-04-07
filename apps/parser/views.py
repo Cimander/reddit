@@ -18,6 +18,7 @@ soup = BS(r.text, 'html.parser')
 
 
 class PrintValueView(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         valut = soup.find_all('td', class_='stat-left')
         price = soup.find_all('td', class_='stat-right')
@@ -41,6 +42,7 @@ owm = OWM('28c8e715bdb5d5bb438b2d1051508faa')
 mgr = owm.weather_manager()
 
 class WeatherAPIView(APIView):
+    permission_classes = [permissions.AllowAny]
     def post(self, request):
         serializer = CitySerializer(data=request.data)
         if serializer.is_valid():
@@ -60,7 +62,9 @@ class WeatherAPIView(APIView):
                         }
 
             )
-            city.weather = city.weather.replace("'", "\"")
+            #print(city.weather)
+            #city.weather = city.weather.replace("'", "\'") это работало, но после чего перестал
+            # (он делал строки для нормального оформления)
             city.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
