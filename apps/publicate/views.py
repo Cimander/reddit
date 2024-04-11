@@ -1,9 +1,11 @@
 from rest_framework import viewsets, permissions, status, generics
+
+from .filter import PostFilter
+from .pagination import PkPageNumberPagination
+from rest_framework import filters
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from .models import Post, Comment, Like, Cart, Category
+
+from .models import Post, Comment, Like, Category
 from .serializers import (
     PostSerializer,
     CommentSerializer,
@@ -11,8 +13,9 @@ from .serializers import (
     PostCreateSerializer,
     CommentCreateSerializer,
     CategorySerializer,
-    CartUpdateSerializer,
-    CartSerializer)
+
+    #CartSerializer
+)
 
 
 class PostRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -30,13 +33,23 @@ class LikeCreateAPIView(generics.CreateAPIView):
 
     serializer_class = LikeSerializer
     permission_classes = [permissions.AllowAny]
-class PostListAPIView(generics.ListAPIView):
-    permission_classes = [permissions.AllowAny]
-    serializer_class = PostSerializer
+class PostListAPIView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
+    serializer_class = PostSerializer
     filter_backends = (SearchFilter, OrderingFilter,)
-    search_fields = ['title']
+    search_fields = ['title', 'content']
+    pagination_class = PkPageNumberPagination
+    permission_classes = [permissions.AllowAny]
 
+class PostListCopy(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    filter_backends = (SearchFilter, OrderingFilter,)
+    ordering_fields = ['created_at']
+    search_fields = ['title', 'content']
+    filterset_class = PostFilter
+    pagination_class = PkPageNumberPagination
+    permission_classes = [permissions.AllowAny]
 
 class CommentViewSet(generics.CreateAPIView):
     queryset = Comment.objects.all()

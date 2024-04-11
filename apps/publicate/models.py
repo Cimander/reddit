@@ -31,13 +31,13 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    def add_to_favorite(self, user):
-        cart, created = Cart.objects.get_or_create(user=user)
-        cart.posts.add(self)
+    #def add_to_favorite(self, user):
+    #    cart, created = Cart.objects.get_or_create(user=user)
+    #    cart.posts.add(self)
 
-    def remove_from_favorite(self, user):
-        cart, created = Cart.objects.get_or_create(user=user)
-        cart.posts.remove(self)
+    #def remove_from_favorite(self, user):
+    #    cart, created = Cart.objects.get_or_create(user=user)
+    #    cart.posts.remove(self)
 
 class Like(models.Model):
     post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)

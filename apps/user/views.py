@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from .models import User
 from .serializer import UserSerializer
-from ..publicate.models import Cart
+#from ..publicate.models import Cart
 
 
 
@@ -26,7 +26,7 @@ class RegisterView(APIView):
 
             )
             user.save()
-            cart = Cart.objects.create(user=user)
-            cart.save()
+            #cart = Cart.objects.create(user=user)
+            #cart.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -2,7 +2,8 @@ from django.db.models import Avg
 from rest_framework import serializers
 from apps.user.serializer import UserSerializer
 from . import models
-from .models import Post, Comment, Like, Category,Cart
+from .models import Post, Comment, Like, Category
+
 
 class PostCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -63,15 +64,10 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 
+#class CartSerializer(serializers.ModelSerializer):
 
-class CartSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Cart
-        fields = "__all__"
+#    class Meta:
+#        model = Cart
+#        fields = "__all__"
 
 
-class CartUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cart
-        fields = "__all__"

@@ -6,6 +6,7 @@ from .views import (
     LikeCreateAPIView,
     PostCreateAPIView,
     PostRetrieveUpdateDestroy,
+    PostListCopy,
     #CartAPIView,
     #CartRetrieveUpdateDestroy,
     CategoryViewSet)
@@ -14,6 +15,8 @@ from .views import (
 
 urlpatterns = [
     path('', PostListAPIView.as_view(), name='list-post'),
+    path('copy/', PostListCopy.as_view(), name='list-post'),
+
     path('create/', PostCreateAPIView.as_view(), name='post-create'),
     path('redact/<int:pk>/', PostRetrieveUpdateDestroy.as_view(), name='post-redact'),
     path('comment/', CommentViewSet.as_view(), name='comment'),
